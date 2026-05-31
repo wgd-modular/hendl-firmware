@@ -104,13 +104,12 @@
 //  CH2: QD=bit3, QC=bit2
 //  CH1: QF=bit5, QE=bit4
 // ------------------------------------------------------------
-#define LED_CH3_LED1_BIT        1u   // QB
-#define LED_CH3_LED2_BIT        0u   // QA
-#define LED_CH2_LED1_BIT        3u   // QD
-#define LED_CH2_LED2_BIT        2u   // QC
-#define LED_CH1_LED1_BIT        5u   // QF
-#define LED_CH1_LED2_BIT        4u   // QE
-
+#define LED_CH1_LED1_BIT        5u   // QF → D3
+#define LED_CH1_LED2_BIT        4u   // QE → D4
+#define LED_CH2_LED1_BIT        3u   // QD → D5
+#define LED_CH2_LED2_BIT        2u   // QC → D6
+#define LED_CH3_LED1_BIT        1u   // QB → D7
+#define LED_CH3_LED2_BIT        0u   // QA → D8
 // ------------------------------------------------------------
 //  Channel / mode counts
 // ------------------------------------------------------------

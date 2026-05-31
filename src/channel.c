@@ -1,15 +1,13 @@
 #include "channel.h"
 #include "trigger.h"
+#include "button.h"
 #include "lfo.h"
 #include "envelope.h"
 #include "sample_hold.h"
 #include "turing.h"
 #include "euclidean.h"
 #include "smooth_random.h"
-
-// ============================================================
-//  Channel DSP dispatcher
-// ============================================================
+#include "pico/time.h"
 
 void channel_init_all(hendl_t *h) {
     for (uint8_t i = 0; i < NUM_CHANNELS; i++) {
@@ -23,15 +21,17 @@ void channel_init_all(hendl_t *h) {
         envelope_init(&c->env);
         sample_hold_init(&c->sh);
     }
+
+    uint64_t now = time_us_64();
+    for (uint8_t i = 0; i < NUM_CHANNELS; i++) {
+        button_state_init(&h->ch[i].btn, now);
+    }
+
     turing_init(&h->ch[0].turing, &h->prng_state);
     euclidean_init(&h->ch[1].euclidean);
     smooth_random_init(&h->ch[2].smooth_rand, &h->prng_state);
 }
 
-// ------------------------------------------------------------
-//  Process one DSP tick for a single channel.
-//  The "unique" mode (index 3) differs per channel.
-// ------------------------------------------------------------
 static float process_channel(channel_t *c, uint32_t *prng) {
     channel_adcs_t *adcs = &c->adcs;
     bool trig            = c->trig.triggered;
@@ -63,7 +63,6 @@ static float process_channel(channel_t *c, uint32_t *prng) {
 void channel_process_all(hendl_t *h) {
     for (uint8_t i = 0; i < NUM_CHANNELS; i++) {
         h->ch[i].output = process_channel(&h->ch[i], &h->prng_state);
-        // Consume trigger after DSP has seen it
         trigger_consume(&h->ch[i].trig);
     }
 }
