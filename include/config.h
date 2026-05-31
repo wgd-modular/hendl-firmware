@@ -51,9 +51,9 @@
 // ------------------------------------------------------------
 //  GPIO — Mode buttons (active LOW, internal pull-up)
 // ------------------------------------------------------------
-#define BTN_CH1_PIN             18u
-#define BTN_CH2_PIN             19u
-#define BTN_CH3_PIN             20u
+#define BTN_CH1_PIN             19u
+#define BTN_CH2_PIN             20u
+#define BTN_CH3_PIN             18u
 
 // ------------------------------------------------------------
 //  GPIO — PWM CV outputs
@@ -85,12 +85,15 @@
 // ------------------------------------------------------------
 //  CD4051 channel map
 // ------------------------------------------------------------
-#define MUX_CH1_POT1            0u
-#define MUX_CH1_POT2            1u
-#define MUX_CH2_POT1            2u // should be 1U
-#define MUX_CH2_POT2            3u
-#define MUX_CH3_POT1            4u // SHould be 2U
+#define MUX_CH1_POT1            0u // Correct
+#define MUX_CH1_POT2            2u
+
+#define MUX_CH2_POT1            4u
+#define MUX_CH2_POT2            1u
+
+#define MUX_CH3_POT1            3u
 #define MUX_CH3_POT2            5u
+
 #define MUX_CH1_CV              6u
 #define MUX_CH2_CV              7u
 
