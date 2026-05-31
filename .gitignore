@@ -1,1 +1,7 @@
 build/
+.toolchain/
+.pico-sdk/
+*.uf2
+*.elf
+*.bin
+*.map

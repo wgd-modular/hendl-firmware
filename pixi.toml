@@ -1,0 +1,45 @@
+[project]
+name        = "hendl-firmware"
+version     = "0.1.0"
+description = "Eurorack multi modulation source — Pico 2 / RP2350"
+channels    = ["conda-forge"]
+platforms   = ["linux-64", "osx-arm64", "osx-64"]
+
+[dependencies]
+cmake  = ">=3.28"
+make   = ">=4.3"
+python = ">=3.11"
+git    = ">=2.40"
+
+[tasks]
+
+toolchain = { cmd = "python scripts/fetch_toolchain.py linux", description = "Download ARM GNU Toolchain into .toolchain/" }
+
+pico-sdk = { cmd = """
+test -d .pico-sdk || ( \
+  git clone --depth 1 --branch 2.1.1 https://github.com/raspberrypi/pico-sdk.git .pico-sdk && \
+  git -C .pico-sdk submodule update --init --depth 1 )
+""", description = "Clone Pico SDK 2.1.1 into .pico-sdk/" }
+
+configure = { cmd = """
+cmake -S . -B build \
+  -DPICO_SDK_PATH=$PIXI_PROJECT_ROOT/.pico-sdk \
+  -DPICO_BOARD=pico2 \
+  -DPICO_PLATFORM=rp2350 \
+  -DPICO_TOOLCHAIN_PATH=$PIXI_PROJECT_ROOT/.toolchain/bin \
+  -DPICO_COMPILER=pico_arm_cortex_m33_gcc
+""", depends-on = ["toolchain", "pico-sdk"], description = "CMake configure" }
+
+build = { cmd = "cmake --build build --parallel", depends-on = ["configure"], description = "Full build" }
+
+rebuild = { cmd = "cmake --build build --parallel", description = "Incremental build (skip reconfigure)" }
+
+clean = { cmd = "rm -rf build", description = "Remove build directory" }
+
+flash = { cmd = "picotool load -f build/hendl.uf2 && picotool reboot", description = "Flash to Pico 2 (BOOTSEL mode required)" }
+
+[target.osx-arm64.tasks]
+toolchain = { cmd = "python scripts/fetch_toolchain.py macos-arm64" }
+
+[target.osx-64.tasks]
+toolchain = { cmd = "python scripts/fetch_toolchain.py macos-x64" }
