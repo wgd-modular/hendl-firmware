@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.13)
 
 # Pull in Pico SDK (must be before project())
-include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
+if(DEFINED PICO_SDK_PATH)
+    include(${PICO_SDK_PATH}/external/pico_sdk_import.cmake)
+else()
+    include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
+endif()
 
 project(hendl C CXX ASM)
 set(CMAKE_C_STANDARD 11)
