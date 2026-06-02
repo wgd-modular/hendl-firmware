@@ -21,14 +21,13 @@
 
 // ------------------------------------------------------------
 //  PWM output
-//  PWM wrap = 4095 → 12-bit resolution
-//  PWM freq = sys_clk / (divider * wrap)
+//  PWM wrap = 2047 → 11-bit resolution
+//  PWM freq = sys_clk / (divider * wrap) = 150 MHz / (1 * 2048) ≈ 73.2 kHz
 //  sys_clk = 150 MHz (Pico 2 default)
-//  divider = 150000000 / (20000 * 4096) ≈ 1.83 → use 1 + 220/256
 // ------------------------------------------------------------
-#define PWM_WRAP                4095u
+#define PWM_WRAP                2047u
 #define PWM_CLK_DIV_INT         1u
-#define PWM_CLK_DIV_FRAC        220u   // approx 1.859 → ~19.7 kHz
+#define PWM_CLK_DIV_FRAC        0u     // divider = 1.0 → 73.2 kHz, 11-bit
 
 // Internal 0.0–1.0 float maps to 0–4095 PWM counts
 // Output stage: ×1.51 gain → 0–5 V from 0–3.3 V rail
