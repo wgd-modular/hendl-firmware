@@ -18,7 +18,7 @@
 
 // Exponential curve shape coefficient.
 // Higher = more pronounced exponential.
-#define ENV_EXP_K           4.0f
+#define ENV_EXP_K           12.0f
 
 static inline float pot_to_time(float pot, float t_min, float t_max) {
     return t_min * powf(t_max / t_min, pot);
