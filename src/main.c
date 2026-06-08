@@ -136,6 +136,19 @@ int main(void) {
             g_led_dirty = false;
         }
 
+        for (uint8_t i = 0; i < NUM_CHANNELS; i++) {
+            if (g_hendl.ch[i].led_flash_pending) {
+                g_hendl.ch[i].led_flash_pending = false;
+                shift_reg_write(0x00);
+                sleep_ms(80);
+                shift_reg_update_leds(g_hendl.ch);
+                sleep_ms(80);
+                shift_reg_write(0x00);
+                sleep_ms(80);
+                shift_reg_update_leds(g_hendl.ch);
+            }
+        }
+
         g_hendl.tick++;
     }
 

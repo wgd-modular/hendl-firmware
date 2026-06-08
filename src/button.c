@@ -70,6 +70,7 @@ void button_poll(channel_t ch[NUM_CHANNELS]) {
         if (b->long_press_event) {
             b->long_press_event = false;
             ch[i].op_mode = (ch[i].op_mode == OP_LOOPING) ? OP_TRIGGERED : OP_LOOPING;
+            ch[i].led_flash_pending = true;
         }
     }
 }

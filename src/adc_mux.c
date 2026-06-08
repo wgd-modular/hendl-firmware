@@ -67,9 +67,9 @@ void adc_scan_all(channel_t ch[NUM_CHANNELS]) {
     ch[2].adcs.pot2 = ADC_TO_FLOAT(adc_mux_read(MUX_CH3_POT2));
 
     // CV reads
-    ch[0].adcs.cv = ADC_TO_FLOAT(adc_mux_read(MUX_CH1_CV));
-    ch[1].adcs.cv = ADC_TO_FLOAT(adc_mux_read(MUX_CH2_CV));
-    ch[2].adcs.cv = ADC_TO_FLOAT(adc_direct_read());
+    ch[0].adcs.cv = 1.0f - ADC_TO_FLOAT(adc_mux_read(MUX_CH1_CV));
+    ch[1].adcs.cv = 1.0f - ADC_TO_FLOAT(adc_mux_read(MUX_CH2_CV));
+    ch[2].adcs.cv = 1.0f - ADC_TO_FLOAT(adc_direct_read());
 
     // Patched flags set by normalization module; copy convenience flag
     ch[0].adcs.cv_patched = ch[0].norm.patched;

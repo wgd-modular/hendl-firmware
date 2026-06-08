@@ -149,6 +149,7 @@ typedef struct {
     trigger_state_t     trig;
     button_state_t      btn;
     norm_state_t        norm;
+    bool                led_flash_pending;  // Double flash when toggling op_mode (looping/triggered)
 
     // DSP sub-states (union would work but explicit is clearer)
     lfo_state_t         lfo;
