@@ -33,7 +33,6 @@ static void check_led_update(hendl_t *h) {
     }
 }
 
-// Berechne SR-Byte für alle Kanäle außer `skip_ch`
 static uint8_t sr_without_channel(const hendl_t *h, uint8_t skip_ch) {
     uint8_t sr = 0x00u;
     for (uint8_t j = 0; j < NUM_CHANNELS; j++) {
