@@ -122,7 +122,7 @@
 // ------------------------------------------------------------
 #define NORM_WINDOW             16u
 #define NORM_MISMATCH_THRESH    2u
-#define NORM_PROBE_TOLERANCE    0.08f   // ±8% of full scale
+#define NORM_PROBE_TOLERANCE    0.10f
 
 // ------------------------------------------------------------
 //  Euclidean sequencer max steps
@@ -141,3 +141,8 @@
 //  Unipolar use: 0–5 V Eurorack → 0–3.3 V (hardware passive divider)
 // ------------------------------------------------------------
 #define CV_BIPOLAR_OFFSET       0.5f    // subtract to centre-normalise
+
+// ------------------------------------------------------------
+// Normalization probe output pin
+// ------------------------------------------------------------
+#define NORM_PROBE_PIN          15u

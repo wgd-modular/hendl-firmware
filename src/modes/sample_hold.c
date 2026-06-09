@@ -31,6 +31,7 @@ void sample_hold_init(sh_state_t *s) {
 float sample_hold_process(sh_state_t *s, const channel_adcs_t *adcs,
                           bool triggered, op_mode_t op_mode,
                           uint32_t *prng_state) {
+    prng_next(prng_state);
     bool do_sample = false;
 
     if (op_mode == OP_TRIGGERED) {
@@ -48,16 +49,13 @@ float sample_hold_process(sh_state_t *s, const channel_adcs_t *adcs,
     }
 
     if (do_sample) {
-        float input;
-        if (adcs->cv_patched) {
-            input = adcs->cv;
-        } else {
-            // Unpatched: use internal PRNG noise
-            input = prng_float(prng_state);
+            float input;
+            if (adcs->cv_patched) {
+                input = adcs->cv;
+            } else {
+                input = prng_float(prng_state);
+            }
+            s->held_value = input * adcs->pot2;
         }
-        // Apply Pot2 level (attenuator)
-        s->held_value = input * adcs->pot2;
-    }
-
     return s->held_value;
 }

@@ -12,47 +12,17 @@
 #include "normalization.h"
 #include "channel.h"
 
-// ============================================================
-//  hendl — main firmware entry point
-//
-//  Execution model: single-core polling loop on Core 0.
-//  Precise timing via repeating alarm (hardware timer).
-//  Core 1 is unused (available for future expansion).
-//
-//  Loop order per tick:
-//    1. Poll trigger GPIOs
-//    2. Poll mode buttons (debounce + mode/op change)
-//    3. ADC scan (all pots + CVs via mux)
-//    4. Normalization detection update
-//    5. DSP: per-channel algorithm
-//    6. PWM output update
-//    7. LED update (shift register) — only when mode changes
-// ============================================================
-
-// Global firmware state — static to keep off stack
 static hendl_t g_hendl;
-
-// LED update needed flag — set when mode changes
 static volatile bool g_led_dirty = true;
-
-// ------------------------------------------------------------
-//  DSP tick alarm callback
-//  Called by hardware timer at SAMPLE_RATE_HZ.
-// ------------------------------------------------------------
 static volatile bool g_tick_flag = false;
+static uint8_t prev_modes[NUM_CHANNELS] = { 0xFF, 0xFF, 0xFF };
 
 static int64_t tick_alarm_callback(alarm_id_t id, void *user_data) {
     (void)id;
     (void)user_data;
     g_tick_flag = true;
-    // Re-schedule: return negative value to repeat after |us| delay
     return -(int64_t)SAMPLE_PERIOD_US;
 }
-
-// ------------------------------------------------------------
-//  Mode snapshot for LED dirty detection
-// ------------------------------------------------------------
-static uint8_t prev_modes[NUM_CHANNELS] = { 0xFF, 0xFF, 0xFF };
 
 static void check_led_update(hendl_t *h) {
     for (uint8_t i = 0; i < NUM_CHANNELS; i++) {
@@ -63,50 +33,74 @@ static void check_led_update(hendl_t *h) {
     }
 }
 
-// ------------------------------------------------------------
-//  Initialise all hardware subsystems
-// ------------------------------------------------------------
-static void hw_init(hendl_t *h) {
-    // Clock: Pico 2 defaults to 150 MHz; no explicit set needed.
-    stdio_init_all();   // No-op if USB/UART stdio disabled in CMake
+// Berechne SR-Byte für alle Kanäle außer `skip_ch`
+static uint8_t sr_without_channel(const hendl_t *h, uint8_t skip_ch) {
+    uint8_t sr = 0x00u;
+    for (uint8_t j = 0; j < NUM_CHANNELS; j++) {
+        if (j == skip_ch) continue;
+        uint8_t m   = (uint8_t)h->ch[j].mode & 0x03u;
+        uint8_t msb = (m >> 1) & 0x01u;
+        uint8_t lsb =  m       & 0x01u;
+        switch (j) {
+            case 0: sr |= (msb << LED_CH1_LED1_BIT) | (lsb << LED_CH1_LED2_BIT); break;
+            case 1: sr |= (msb << LED_CH2_LED1_BIT) | (lsb << LED_CH2_LED2_BIT); break;
+            case 2: sr |= (msb << LED_CH3_LED1_BIT) | (lsb << LED_CH3_LED2_BIT); break;
+        }
+    }
+    return sr;
+}
 
+static void do_double_flash(const hendl_t *h, uint8_t ch_idx) {
+    uint8_t ch_mask = 0x00u;
+    switch (ch_idx) {
+        case 0: ch_mask = (1u << LED_CH1_LED1_BIT) | (1u << LED_CH1_LED2_BIT); break;
+        case 1: ch_mask = (1u << LED_CH2_LED1_BIT) | (1u << LED_CH2_LED2_BIT); break;
+        case 2: ch_mask = (1u << LED_CH3_LED1_BIT) | (1u << LED_CH3_LED2_BIT); break;
+    }
+    uint8_t sr_rest = sr_without_channel(h, ch_idx);
+
+    shift_reg_write(sr_rest);
+    sleep_ms(80);
+    shift_reg_write(sr_rest | ch_mask);
+    sleep_ms(80);
+    shift_reg_write(sr_rest);
+    sleep_ms(80);
+    shift_reg_write(sr_rest | ch_mask);
+    sleep_ms(80);
+    shift_reg_update_leds(h->ch);
+}
+
+static void hw_init(hendl_t *h) {
+    stdio_init_all();
     adc_mux_init();
     pwm_out_init();
     shift_reg_init();
     trigger_init();
     button_init();
 
-    // Firmware state
-    h->tick        = 0u;
-    h->prng_state  = 0xCAFEBABEu;
-    h->sr_byte     = 0x00u;
+    h->tick       = 0u;
+    h->prng_state = 0xCAFEBABEu;
+    h->sr_byte    = 0x00u;
 
     norm_init(h);
     channel_init_all(h);
 
-    // Ensure silence on all outputs
     for (uint8_t i = 0; i < NUM_CHANNELS; i++) {
         pwm_out_set(i, 0.0f);
     }
 }
 
-// ------------------------------------------------------------
-//  Main
-// ------------------------------------------------------------
 int main(void) {
     hw_init(&g_hendl);
 
-    // Kick off periodic alarm
     alarm_id_t alarm = add_alarm_in_us(SAMPLE_PERIOD_US, tick_alarm_callback, NULL, true);
     (void)alarm;
 
-    // Initial LED write
     shift_reg_update_leds(g_hendl.ch);
 
     while (true) {
-        // Spin until alarm fires
         if (!g_tick_flag) {
-            tight_loop_contents();  // Pico SDK low-power spin idiom
+            tight_loop_contents();
             continue;
         }
         g_tick_flag = false;
@@ -114,7 +108,7 @@ int main(void) {
         // --- 1. Trigger polling ---
         trigger_poll(g_hendl.ch);
 
-        // --- 2. Button polling (debounce + mode changes) ---
+        // --- 2. Button polling ---
         button_poll(g_hendl.ch);
         check_led_update(&g_hendl);
 
@@ -130,22 +124,17 @@ int main(void) {
         // --- 6. PWM output ---
         pwm_out_update_all(g_hendl.ch);
 
-        // --- 7. LED update (only when mode changed) ---
+        // --- 7. LED update ---
         if (g_led_dirty) {
             shift_reg_update_leds(g_hendl.ch);
             g_led_dirty = false;
         }
 
+        // --- 8. Double flash bei op_mode Toggle ---
         for (uint8_t i = 0; i < NUM_CHANNELS; i++) {
             if (g_hendl.ch[i].led_flash_pending) {
                 g_hendl.ch[i].led_flash_pending = false;
-                shift_reg_write(0x00);
-                sleep_ms(80);
-                shift_reg_update_leds(g_hendl.ch);
-                sleep_ms(80);
-                shift_reg_write(0x00);
-                sleep_ms(80);
-                shift_reg_update_leds(g_hendl.ch);
+                do_double_flash(&g_hendl, i);
             }
         }
 
