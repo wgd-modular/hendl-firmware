@@ -11,6 +11,7 @@
 #include "button.h"
 #include "normalization.h"
 #include "channel.h"
+#include "persist.h"
 
 static hendl_t g_hendl;
 static volatile bool g_led_dirty = true;
@@ -84,6 +85,8 @@ static void hw_init(hendl_t *h) {
     norm_init(h);
     channel_init_all(h);
 
+    persist_load(h);
+
     for (uint8_t i = 0; i < NUM_CHANNELS; i++) {
         pwm_out_set(i, 0.0f);
     }
@@ -136,6 +139,8 @@ int main(void) {
                 do_double_flash(&g_hendl, i);
             }
         }
+
+        persist_update(&g_hendl);
 
         g_hendl.tick++;
     }
