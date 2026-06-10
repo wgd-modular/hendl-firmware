@@ -28,6 +28,7 @@ add_executable(hendl
     src/modes/turing.c
     src/modes/euclidean.c
     src/modes/smooth_random.c
+    src/persist.c
 )
 
 target_include_directories(hendl PRIVATE include)
@@ -38,6 +39,7 @@ target_link_libraries(hendl
     hardware_pwm
     hardware_gpio
     hardware_timer
+    hardware_flash
     pico_multicore
     m
 )
