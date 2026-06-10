@@ -5,3 +5,6 @@ build/
 *.elf
 *.bin
 *.map
+.picotool/
+.picotool-src/
+.picotool-build/
