@@ -50,7 +50,7 @@ static uint8_t sr_without_channel(const hendl_t *h, uint8_t skip_ch) {
     return sr;
 }
 
-static void do_double_flash(const hendl_t *h, uint8_t ch_idx) {
+static void do_flash_triggered(const hendl_t *h, uint8_t ch_idx) {
     uint8_t ch_mask = 0x00u;
     switch (ch_idx) {
         case 0: ch_mask = (1u << LED_CH1_LED1_BIT) | (1u << LED_CH1_LED2_BIT); break;
@@ -66,6 +66,27 @@ static void do_double_flash(const hendl_t *h, uint8_t ch_idx) {
     shift_reg_write(sr_rest);
     sleep_ms(80);
     shift_reg_write(sr_rest | ch_mask);
+    sleep_ms(80);
+    shift_reg_update_leds(h->ch);
+}
+
+
+static void do_flash_looping(const hendl_t *h, uint8_t ch_idx) {
+    uint8_t led1 = 0u, led2 = 0u;
+    switch (ch_idx) {
+        case 0: led1 = (1u << LED_CH1_LED1_BIT); led2 = (1u << LED_CH1_LED2_BIT); break;
+        case 1: led1 = (1u << LED_CH2_LED1_BIT); led2 = (1u << LED_CH2_LED2_BIT); break;
+        case 2: led1 = (1u << LED_CH3_LED1_BIT); led2 = (1u << LED_CH3_LED2_BIT); break;
+    }
+    uint8_t sr_rest = sr_without_channel(h, ch_idx);
+
+    shift_reg_write(sr_rest | led1);
+    sleep_ms(80);
+    shift_reg_write(sr_rest | led2);
+    sleep_ms(80);
+    shift_reg_write(sr_rest | led1);
+    sleep_ms(80);
+    shift_reg_write(sr_rest | led2);
     sleep_ms(80);
     shift_reg_update_leds(h->ch);
 }
@@ -136,7 +157,11 @@ int main(void) {
         for (uint8_t i = 0; i < NUM_CHANNELS; i++) {
             if (g_hendl.ch[i].led_flash_pending) {
                 g_hendl.ch[i].led_flash_pending = false;
-                do_double_flash(&g_hendl, i);
+                if (g_hendl.ch[i].op_mode == OP_TRIGGERED) {
+                    do_flash_triggered(&g_hendl, i);
+                } else {
+                    do_flash_looping(&g_hendl, i);
+                }
             }
         }
 
