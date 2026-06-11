@@ -41,7 +41,7 @@ static float process_channel(channel_t *c, uint32_t *prng) {
             return lfo_process(&c->lfo, adcs, trig, c->op_mode);
 
         case MODE_ENVELOPE:
-            return envelope_process(&c->env, adcs, trig);
+            return envelope_process(&c->env, adcs, trig, c->op_mode);
 
         case MODE_SAMPLE_HOLD:
             return sample_hold_process(&c->sh, adcs, trig, c->op_mode, prng);

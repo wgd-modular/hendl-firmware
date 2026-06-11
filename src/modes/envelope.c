@@ -28,7 +28,7 @@ static inline float pot_to_time(float pot, float t_min, float t_max) {
 // phase 0→1 input, output 0→1 with exponential shape.
 static inline float exp_curve(float phase) {
     // (e^(k*phase) - 1) / (e^k - 1)  normalised to 0–1
-    static const float denom = 53.5982f;  // e^4 - 1, precomputed
+    static const float denom = 162753.79f;  // e^12 - 1, precomputed
     return (expf(ENV_EXP_K * phase) - 1.0f) / denom;
 }
 
@@ -38,8 +38,9 @@ void envelope_init(env_state_t *s) {
     s->phase = 0.0f;
 }
 
-float envelope_process(env_state_t *s, const channel_adcs_t *adcs, bool triggered) {
-    // Retrigger on rising edge — restart attack from current level
+float envelope_process(env_state_t *s, const channel_adcs_t *adcs, bool triggered, op_mode_t op_mode) {
+    // Retrigger on rising edge — restart attack from current level.
+    // In looping mode also retrigger when decay naturally completes (handled below).
     if (triggered) {
         s->stage = ENV_ATTACK;
         s->phase = 0.0f;
@@ -75,7 +76,11 @@ float envelope_process(env_state_t *s, const channel_adcs_t *adcs, bool triggere
             if (s->phase >= 1.0f) {
                 s->phase = 0.0f;
                 s->level = 0.0f;
-                s->stage = ENV_IDLE;
+                if (op_mode == OP_LOOPING) {
+                    s->stage = ENV_ATTACK;
+                } else {
+                    s->stage = ENV_IDLE;
+                }
             } else {
                 // Decay = inverse exponential (1 → 0)
                 s->level = 1.0f - exp_curve(s->phase);
