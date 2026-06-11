@@ -1,0 +1,58 @@
+name: Release Please
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: google-github-actions/release-please-action@v4
+        id: release
+        with:
+          release-type: simple
+          manifest-file: .release-please-manifest.json
+
+  upload-firmware:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.8.1
+        with:
+          pixi-version: latest
+          cache: true
+
+      - name: Cache ARM toolchain
+        uses: actions/cache@v4
+        with:
+          path: .toolchain
+          key: toolchain-arm-gnu-13.3.rel1-linux-x64
+
+      - name: Cache Pico SDK
+        uses: actions/cache@v4
+        with:
+          path: .pico-sdk
+          key: pico-sdk-2.1.1
+
+      - name: Build
+        run: pixi run build
+
+      - name: Upload firmware to release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ needs.release-please.outputs.tag_name }} \
+            build/hendl.uf2 \
+            --clobber
