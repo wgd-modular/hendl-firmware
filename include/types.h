@@ -48,7 +48,9 @@ typedef enum {
 } lfo_wave_t;
 
 typedef struct {
-    float       phase;          // 0.0–1.0
+    float       phase;              // 0.0–1.0
+    uint32_t    gate_timer;         // samples since last rising edge (gate sync)
+    uint32_t    gate_period;        // measured gate period in samples (0 = not yet synced)
 } lfo_state_t;
 
 // ------------------------------------------------------------
