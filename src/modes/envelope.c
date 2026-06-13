@@ -47,6 +47,14 @@ float envelope_process(env_state_t *s, const channel_adcs_t *adcs, bool triggere
         // Note: level is NOT reset — allows smooth retrigger from mid-decay
     }
 
+    // In looping mode the envelope free-runs: if it is idle (e.g. just
+    // switched into looping mode, or never triggered), start the cycle so
+    // it loops continuously without requiring an external trigger.
+    if (op_mode == OP_LOOPING && s->stage == ENV_IDLE) {
+        s->stage = ENV_ATTACK;
+        s->phase = 0.0f;
+    }
+
     float attack_s = pot_to_time(adcs->pot1, ENV_ATTACK_MIN_S, ENV_ATTACK_MAX_S);
     float decay_s  = pot_to_time(adcs->pot2, ENV_DECAY_MIN_S,  ENV_DECAY_MAX_S);
 
