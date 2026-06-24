@@ -79,13 +79,14 @@ float turing_process(turing_state_t *s, const channel_adcs_t *adcs,
                                 : (uint16_t)((1u << s->length) - 1u);
 
         // MSB of active loop window — recycled when locked
-        uint8_t msb_bit = (uint8_t)((s->shift_reg >> (s->length - 1u)) & 0x01u);
+        uint8_t msb_bit = (uint8_t)((s->shift_reg >> (TURING_REGISTER_BITS - 1u)) & 0x01u);
 
         // Decide new LSB to shift in
         uint8_t new_bit;
-        float   rnd = prng_float(prng_state);
+        float   chaos = 1.0f - fabsf(rand_prob * 2.0f - 1.0f);
+        float   rnd   = prng_float(prng_state);
 
-        if (rnd < rand_prob) {
+        if (rnd < chaos) {
             // Random bit
             new_bit = (uint8_t)(prng_float(prng_state) > 0.5f ? 1u : 0u);
         } else {
