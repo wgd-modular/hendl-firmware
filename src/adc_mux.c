@@ -51,27 +51,24 @@ uint16_t adc_direct_read(void) {
     return adc_read();
 }
 
-// ------------------------------------------------------------
-//  Full ADC scan — reads all pots and CV inputs, updates
-//  channel_adcs_t for each channel.
-//  CV normalisation detection flag is set by normalization.c;
-//  here we just capture the raw float value.
-// ------------------------------------------------------------
 void adc_scan_all(channel_t ch[NUM_CHANNELS]) {
-    // Pot reads (via mux)
-    ch[0].adcs.pot1 = ADC_TO_FLOAT(adc_mux_read(MUX_CH1_POT1));
-    ch[0].adcs.pot2 = ADC_TO_FLOAT(adc_mux_read(MUX_CH1_POT2));
-    ch[1].adcs.pot1 = ADC_TO_FLOAT(adc_mux_read(MUX_CH2_POT1));
-    ch[1].adcs.pot2 = ADC_TO_FLOAT(adc_mux_read(MUX_CH2_POT2));
-    ch[2].adcs.pot1 = ADC_TO_FLOAT(adc_mux_read(MUX_CH3_POT1));
-    ch[2].adcs.pot2 = ADC_TO_FLOAT(adc_mux_read(MUX_CH3_POT2));
+    static const uint8_t pot_mux[6] = {
+        MUX_CH1_POT1, MUX_CH1_POT2,
+        MUX_CH2_POT1, MUX_CH2_POT2,
+        MUX_CH3_POT1, MUX_CH3_POT2,
+    };
+    static uint8_t pot_idx = 0u;
 
-    // CV reads
+    float pot = ADC_TO_FLOAT(adc_mux_read(pot_mux[pot_idx]));
+    uint8_t c = pot_idx >> 1;
+    if (pot_idx & 1u) ch[c].adcs.pot2 = pot;
+    else              ch[c].adcs.pot1 = pot;
+    pot_idx = (uint8_t)((pot_idx + 1u) % 6u);
+
     ch[0].adcs.cv = 1.0f - ADC_TO_FLOAT(adc_mux_read(MUX_CH1_CV));
     ch[1].adcs.cv = 1.0f - ADC_TO_FLOAT(adc_mux_read(MUX_CH2_CV));
     ch[2].adcs.cv = 1.0f - ADC_TO_FLOAT(adc_direct_read());
 
-    // Patched flags set by normalization module; copy convenience flag
     ch[0].adcs.cv_patched = ch[0].norm.patched;
     ch[1].adcs.cv_patched = ch[1].norm.patched;
     ch[2].adcs.cv_patched = ch[2].norm.patched;
