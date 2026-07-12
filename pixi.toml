@@ -12,6 +12,8 @@ python     = ">=3.11"
 git        = ">=2.40"
 libusb     = ">=1.0"
 pkg-config = "*"
+pandoc     = ">=3.1"
+typst      = ">=0.11"
 
 [tasks]
 toolchain = { cmd = "python scripts/fetch_toolchain.py linux", description = "Download ARM GNU Toolchain into .toolchain/" }
@@ -47,6 +49,8 @@ build = { cmd = "cmake --build build --parallel", depends-on = ["configure"], de
 rebuild = { cmd = "cmake --build build --parallel", description = "Incremental build (skip reconfigure)" }
 
 clean = { cmd = "rm -rf build", description = "Remove build directory" }
+
+docs = { cmd = "python scripts/build_docs.py", description = "Build the PDF user manual into build/hendl-manual.pdf" }
 
 flash = { cmd = "$PIXI_PROJECT_ROOT/.picotool/bin/picotool load -f build/hendl.uf2 && $PIXI_PROJECT_ROOT/.picotool/bin/picotool reboot", depends-on = ["build", "picotool"], description = "Flash to Pico 2 (BOOTSEL mode required)" }
 

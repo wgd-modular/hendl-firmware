@@ -1,0 +1,29 @@
+name: Docs
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: [main]
+
+jobs:
+  manual:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.8.1
+        with:
+          pixi-version: latest
+          cache: true
+
+      - name: Build manual
+        run: pixi run docs
+
+      - name: Upload manual artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hendl-manual-${{ github.sha }}
+          path: build/hendl-manual.pdf
+          retention-days: 30
