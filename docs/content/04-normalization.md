@@ -1,8 +1,8 @@
 # Sensing Your Patch
 
 hendl knows whether a cable is plugged into each CV input, without any special
-"normalled" switching jacks. This is what lets the knobs stay in full control
-until the moment you patch something in.
+"normalled" switching jacks. So the panel controls stay in charge on their own,
+and CV only takes over once you patch a cable into the input.
 
 ## How it works
 
@@ -14,6 +14,8 @@ and hendl marks that input as *patched*.
 
 The detection runs continuously and settles within a few milliseconds of
 plugging or unplugging, so it always reflects the current state of your patch.
+This normalization-probe technique was pioneered by Émilie Gillet in the Mutable
+Instruments modules.
 
 > The probe is far below the threshold of anything you will hear or see at the
 > output. It exists only so hendl can tell patched from unpatched.

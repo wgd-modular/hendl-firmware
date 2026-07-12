@@ -10,14 +10,14 @@ looping pattern of stepped voltages that you can freeze, mutate or let run wild
 
 | Control | Function |
 |---------|----------|
-| **Pot 1** | Change — from locked, through random, to locked-inverted |
-| **Pot 2** | Loop length (2 – 16 steps) |
-| **CV** | Bias applied to the Change amount |
+| **Pot 1** | Lock — from locked, through random, to locked-inverted |
+| **Pot 2** | Steps — loop length (2 – 16) |
+| **CV** | Bias applied to the Lock amount |
 | **Trigger** | Advance one step (in triggered mode) |
 
-## The Change knob
+## The Lock knob
 
-Pot 1 is the heart of the mode. It sets the chance that each step mutates as the
+Pot 1 is the main control. It sets the chance that each step mutates as the
 pattern cycles:
 
 - **Fully counter-clockwise** — locked. The pattern repeats exactly, a stable
@@ -38,13 +38,13 @@ find something you like near the centre, then turn toward an end to lock it in.
 
 ## Length and output
 
-**Pot 2** sets the loop length from 2 to 16 steps. Shorter loops give tight,
-recognisable motifs; longer loops give sprawling sequences that take longer to
-come around. The output is the shift register read as a voltage, so each locked
-pattern is a fixed sequence of levels — patch it through a quantiser for
-melodies, or straight into any parameter for repeating modulation.
+**Pot 2 (Steps)** sets the loop length from 2 to 16 steps. Shorter loops give
+tight, recognisable motifs; longer loops give sprawling sequences that take
+longer to come around. The output is the shift register read as a voltage, so
+each locked pattern is a fixed sequence of levels — patch it through a quantiser
+for melodies, or straight into any parameter for repeating modulation.
 
-With a cable in the **CV** input, CV biases the Change amount, so you can open a
+With a cable in the **CV** input, CV biases the Lock amount, so you can open a
 locked loop up to mutation and close it again from another modulator or a manual
 control voltage.
 
@@ -56,6 +56,6 @@ control voltage.
 
 ## Patch ideas
 
-- **Triggered** from your clock, into a quantiser, Change near the centre —
+- **Triggered** from your clock, into a quantiser, Lock near the centre —
   turn slowly toward an end until a melody locks.
 - Short length, fully locked, into a filter for a repeating rhythmic sweep.

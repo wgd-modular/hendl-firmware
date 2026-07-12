@@ -35,6 +35,7 @@ PAGES = [
     "content/modes/50-euclidean.md",
     "content/modes/60-smooth-random.md",
     "content/90-specifications.md",
+    "content/95-acknowledgements.md",
 ]
 
 

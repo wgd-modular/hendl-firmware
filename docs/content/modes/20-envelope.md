@@ -20,8 +20,9 @@ Both stages are exponential, giving a natural, snappy contour rather than a
 straight-line ramp. Both time ranges are logarithmic, so there is fine control
 over short times and plenty of reach into long, slow shapes.
 
-With a cable in the **CV** input, CV scales the decay time around the knob — a
-quick way to make repeated hits open and close under external control.
+With a cable in the **CV** input, CV scales the decay time around the knob — an
+easy way to make a voice more dynamic, lengthening and shortening its tail from
+another source.
 
 ## Looping vs. triggered
 
@@ -34,5 +35,5 @@ quick way to make repeated hits open and close under external control.
 ## Patch ideas
 
 - **Triggered**, short attack, medium decay, into a VCA for plucks.
-- **Looping**, long attack, long decay, into a filter for slow tidal swells.
+- **Looping**, long attack, long decay, into a filter for slow swells.
 - Patch a slow LFO into **CV** to breathe the decay time in and out.

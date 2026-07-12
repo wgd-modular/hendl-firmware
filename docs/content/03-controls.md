@@ -6,12 +6,10 @@ all three.
 ## Pots
 
 The two potentiometers are the primary parameters of the active mode. Their
-function changes from mode to mode — and sometimes between looping and triggered
-— so each mode chapter lists exactly what Pot 1 and Pot 2 do. As a rough guide:
-
-- **Pot 1** tends to be the *time* parameter — rate, attack, clock speed,
-  sequence length.
-- **Pot 2** tends to be the *shape* parameter — waveform, decay, fill, level.
+function changes from mode to mode — and sometimes between looping and triggered.
+The four labels printed around each knob name its job in each of the four modes,
+in order: LFO, Envelope, Sample & Hold, then the channel's unique mode. Each mode
+chapter lists exactly what Pot 1 and Pot 2 do.
 
 ## CV input
 
@@ -59,12 +57,7 @@ double as feedback:
 
 ## Looping vs. triggered
 
-This single choice reshapes every mode:
-
-| | Looping | Triggered |
-|---|---------|-----------|
-| **Clock source** | internal, free-running | external trigger input |
-| **Feels like** | an always-moving modulator | a synced, playable voice |
-| **Patch** | nothing required | clock / trigger into the channel |
-
+This single choice reshapes every mode. In **looping**, the channel runs from its
+own internal clock, so it keeps moving with nothing patched. In **triggered**, it
+is clocked or fired by the trigger input, so it locks to the rest of your patch.
 Each mode chapter describes exactly what changes between the two.

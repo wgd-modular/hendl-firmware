@@ -23,12 +23,13 @@
 
 // ── document + base text ────────────────────────────────────
 #set document(title: manual-title, author: "hendl")
-#set text(font: display, fill: ink, size: 10.5pt, lang: "en", hyphenate: true)
-#set par(justify: true, leading: 0.68em, spacing: 1.15em, first-line-indent: 0pt)
+#set text(font: display, fill: ink, size: 10.5pt, lang: "en", hyphenate: false)
+#set par(justify: false, leading: 0.68em, spacing: 1.15em, first-line-indent: 0pt)
 #set heading(numbering: none)
 #show raw: set text(font: mono, size: 9pt)
 #show link: it => text(weight: "bold")[#it]
 #show emph: it => text(style: "italic")[#it]
+#show regex("(?i)\\bhendl\\b"): text(style: "italic")[HENDL]
 
 #let horizontalrule = align(center, block(above: 1.2em, below: 1.2em,
   line(length: 38%, stroke: 0.5pt + hair)))

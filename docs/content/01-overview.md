@@ -1,11 +1,11 @@
 # Overview
 
-**hendl** is a three-channel modulation source for Eurorack. Each channel is
-an independent generator with its own controls, outputs and character, and each
-one can run any of four modes. Three of those modes are shared across all
-channels; the fourth is unique to each channel, so a single hendl gives you a
-small, deep palette of movement — LFOs, envelopes, sample & hold, a Turing
-machine, a Euclidean sequencer and a smooth random generator.
+hendl is a three-channel modulation source for Eurorack. Each channel is an
+independent generator with its own controls and outputs, and each one can run
+any of four modes. Three of those modes are shared across all channels; the
+fourth is unique to each channel, so a single hendl gives you a small, deep set
+of tools — LFOs, envelopes, sample & hold, a Turing machine, a Euclidean
+sequencer and a smooth random generator.
 
 There is no menu and no screen. Every parameter is a knob, a jack or the mode
 button, and the two LEDs per channel tell you where you are.

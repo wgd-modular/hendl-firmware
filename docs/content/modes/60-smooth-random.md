@@ -3,8 +3,8 @@
 *Channel 3's unique mode.*
 
 A continuously wandering random voltage. Instead of stepping between values like
-Sample & Hold, it glides smoothly toward each new random target, giving flowing,
-organic modulation that never quite repeats.
+Sample & Hold, it glides smoothly toward each new random target, giving flowing
+modulation that never quite repeats.
 
 ## Controls
 
@@ -35,8 +35,8 @@ drift toward high or low values over time.
 
 ## Patch ideas
 
-- Slow change rate, heavy smoothing, into a filter or oscillator for living,
-  breathing drift.
+- Slow change rate, heavy smoothing, into a filter or oscillator for slow,
+  continuous drift.
 - **Triggered** from a slow clock, into pitch through a quantiser, for melodies
   that glide rather than step.
 - Bias with a manual CV to lean the randomness bright or dark.
