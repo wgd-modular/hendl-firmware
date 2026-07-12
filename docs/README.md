@@ -38,6 +38,12 @@ manual always renders. Only the typeface differs; the layout is identical.
 The front panel on the cover is `assets/front-panel.svg`, the same artwork as
 the physical panel.
 
+The manual ends with a **patch sheet** — a drawable, single-tone version of the
+panel (`assets/front-panel-blank.svg`) with near-white pot/jack holes and open
+mode LEDs, alongside space to record settings and connections. That blank panel
+is generated from the real one with `scripts/make_blank_panel.py`; re-run it only
+if `front-panel.svg` changes.
+
 ## In CI
 
 `.github/workflows/docs.yml` builds the manual on every push and pull request

@@ -170,3 +170,31 @@
 #outline(title: none, depth: 2, indent: 1.2em)
 
 $body$
+
+// ============================================================
+//  PATCH SHEET — final page
+// ============================================================
+#let fieldline(w) = box(width: w, baseline: 0.1em, line(length: 100%, stroke: 0.5pt + grey))
+#let notelines(n) = stack(spacing: 0.92cm, ..range(n).map(_ => line(length: 100%, stroke: 0.4pt + hair)))
+
+= Patch Sheet
+
+#grid(columns: (1fr, 1fr), gutter: 1.2cm,
+  [#label("Patch")  #fieldline(1fr)],
+  [#label("Date")  #fieldline(1fr)],
+)
+#v(1.0em)
+
+#grid(columns: (auto, 1fr), gutter: 1.1cm, align: top,
+  box(stroke: 0.6pt + luma(165), inset: 0pt,
+    image("/docs/assets/front-panel-blank.svg", height: 18cm)),
+  [
+    #label("Patched")
+    #v(0.5em)
+    #notelines(8)
+    #v(1.3em)
+    #label("Notes")
+    #v(0.5em)
+    #notelines(8)
+  ],
+)
