@@ -105,27 +105,27 @@
   #text(font: display, style: "italic", weight: "bold", size: 13pt, fill: grey, tracking: 0.18em)[
     WGD MODULAR
   ]
-  #v(0.9em)
+  #v(1.4em)
   #text(font: display, style: "italic", weight: "bold", size: 82pt, tracking: 0.005em)[
     #upper(manual-title)
   ]
-  #v(0.5em)
+  #v(0.85em)
   #text(font: display, style: "italic", size: 15pt, fill: grey, tracking: 0.02em)[
     #upper(manual-subtitle)
   ]
 
   #v(1fr)
-  #align(center)[#image("/docs/assets/front-panel.svg", height: 15.5cm)]
+  #align(center)[#image("/docs/assets/front-panel.svg", height: 15cm)]
   #v(1fr)
 
   #line(length: 3.2cm, stroke: 1.2pt + ink)
-  #v(0.7em)
+  #v(1em)
   #text(font: display, style: "italic", size: 12pt)[USER MANUAL]
-  #v(0.4em)
+  #v(0.7em)
   #text(font: display, style: "italic", size: 9pt, fill: faint)[
     V#manual-version · #manual-revision · #manual-date
   ]
-  #v(0.25em)
+  #v(0.5em)
   #text(font: display, style: "italic", size: 9pt, fill: grey)[
     #link("https://wgdmodular.de")[wgdmodular.de]
   ]

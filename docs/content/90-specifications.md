@@ -18,23 +18,10 @@
 
 <!-- TODO: add power draw (mA @ +12 V / −12 V) -->
 
-## Trigger and CV
-
-- **Triggers** react to a rising edge and accept anything from a short trigger
-  to a sustained gate.
-- **CV inputs** are active only while a cable is patched, and are read relative
-  to their mid-point so a resting CV means "no change".
-
-## Firmware
-
-hendl's behaviour is defined entirely by its firmware, and this manual is built
-from the same source tree. The firmware version it documents is printed in the
-footer of every page.
-
 ## Credits
 
 hendl is designed and built by **WGD Modular** — [wgdmodular.de](https://wgdmodular.de).
-It is an open hardware and firmware project; the firmware and this manual live at
+Its firmware and this manual are open source at
 [github.com/wgd-modular/hendl-firmware](https://github.com/wgd-modular/hendl-firmware).
 
 The manual is typeset with Typst; body text falls back to the OFL-licensed
