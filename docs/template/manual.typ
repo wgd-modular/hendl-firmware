@@ -29,7 +29,9 @@
 #show raw: set text(font: mono, size: 9pt)
 #show link: it => text(weight: "bold")[#it]
 #show emph: it => text(style: "italic")[#it]
-#show regex("(?i)\\bhendl\\b"): text(style: "italic")[HENDL]
+#show regex("(?i)\\bhendl([-.]\\w)?"): it => {
+  if lower(it.text) == "hendl" { text(style: "italic")[HENDL] } else { it }
+}
 
 #let horizontalrule = align(center, block(above: 1.2em, below: 1.2em,
   line(length: 38%, stroke: 0.5pt + hair)))
@@ -95,20 +97,25 @@
 //  COVER
 // ============================================================
 #page(paper: "a4", margin: (x: 2cm, top: 1.8cm, bottom: 1.6cm), numbering: none)[
+  #set par(spacing: 0pt)
   #place(top + right, dy: 0.2em)[
     #text(font: display, style: "italic", size: 9pt, fill: faint)[VERSION #manual-version]
   ]
 
+  #text(font: display, style: "italic", weight: "bold", size: 13pt, fill: grey, tracking: 0.18em)[
+    WGD MODULAR
+  ]
+  #v(0.7em)
   #text(font: display, style: "italic", weight: "bold", size: 82pt, tracking: 0.005em)[
     #upper(manual-title)
   ]
-  #v(-0.1em)
+  #v(0.25em)
   #text(font: display, style: "italic", size: 15pt, fill: grey, tracking: 0.02em)[
     #upper(manual-subtitle)
   ]
 
-  #v(0.7cm)
-  #align(center)[#image("/docs/assets/front-panel.svg", height: 17.5cm)]
+  #v(0.8cm)
+  #align(center)[#image("/docs/assets/front-panel.svg", height: 16.5cm)]
 
   #place(bottom + left)[
     #line(length: 3.2cm, stroke: 1.2pt + ink)
@@ -117,6 +124,10 @@
     #v(0.35em)
     #text(font: display, style: "italic", size: 9pt, fill: faint)[
       V#manual-version · #manual-revision · #manual-date
+    ]
+    #v(0.2em)
+    #text(font: display, style: "italic", size: 9pt, fill: grey)[
+      #link("https://wgdmodular.de")[wgdmodular.de]
     ]
   ]
 ]
@@ -136,7 +147,7 @@
     }
     set text(font: display, style: "italic", size: 8pt, fill: faint)
     grid(columns: (1fr, 1fr),
-      align(left)[HENDL],
+      align(left)[WGD MODULAR],
       align(right)[#if cur != none { upper(cur) }],
     )
     v(-0.3em)

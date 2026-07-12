@@ -33,6 +33,9 @@ footer of every page.
 
 ## Credits
 
-hendl is an open hardware and firmware project. The manual is typeset with
-Typst; body text falls back to the OFL-licensed *Cabin* typeface where the house
-*Gill Sans* is unavailable.
+hendl is designed and built by **WGD Modular** — [wgdmodular.de](https://wgdmodular.de).
+It is an open hardware and firmware project; the firmware and this manual live at
+[github.com/wgd-modular/hendl-firmware](https://github.com/wgd-modular/hendl-firmware).
+
+The manual is typeset with Typst; body text falls back to the OFL-licensed
+*Cabin* typeface where the house *Gill Sans* is unavailable.
