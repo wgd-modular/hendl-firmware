@@ -96,7 +96,7 @@
 // ============================================================
 //  COVER
 // ============================================================
-#page(paper: "a4", margin: (x: 2cm, top: 1.8cm, bottom: 1.6cm), numbering: none)[
+#page(paper: "a4", margin: (x: 2cm, top: 2cm, bottom: 1.8cm), numbering: none)[
   #set par(spacing: 0pt)
   #place(top + right, dy: 0.2em)[
     #text(font: display, style: "italic", size: 9pt, fill: faint)[VERSION #manual-version]
@@ -105,30 +105,29 @@
   #text(font: display, style: "italic", weight: "bold", size: 13pt, fill: grey, tracking: 0.18em)[
     WGD MODULAR
   ]
-  #v(0.7em)
+  #v(0.9em)
   #text(font: display, style: "italic", weight: "bold", size: 82pt, tracking: 0.005em)[
     #upper(manual-title)
   ]
-  #v(0.25em)
+  #v(0.5em)
   #text(font: display, style: "italic", size: 15pt, fill: grey, tracking: 0.02em)[
     #upper(manual-subtitle)
   ]
 
-  #v(0.8cm)
-  #align(center)[#image("/docs/assets/front-panel.svg", height: 16.5cm)]
+  #v(1fr)
+  #align(center)[#image("/docs/assets/front-panel.svg", height: 15.5cm)]
+  #v(1fr)
 
-  #place(bottom + left)[
-    #line(length: 3.2cm, stroke: 1.2pt + ink)
-    #v(0.6em)
-    #text(font: display, style: "italic", size: 12pt)[USER MANUAL]
-    #v(0.35em)
-    #text(font: display, style: "italic", size: 9pt, fill: faint)[
-      V#manual-version · #manual-revision · #manual-date
-    ]
-    #v(0.2em)
-    #text(font: display, style: "italic", size: 9pt, fill: grey)[
-      #link("https://wgdmodular.de")[wgdmodular.de]
-    ]
+  #line(length: 3.2cm, stroke: 1.2pt + ink)
+  #v(0.7em)
+  #text(font: display, style: "italic", size: 12pt)[USER MANUAL]
+  #v(0.4em)
+  #text(font: display, style: "italic", size: 9pt, fill: faint)[
+    V#manual-version · #manual-revision · #manual-date
+  ]
+  #v(0.25em)
+  #text(font: display, style: "italic", size: 9pt, fill: grey)[
+    #link("https://wgdmodular.de")[wgdmodular.de]
   ]
 ]
 
