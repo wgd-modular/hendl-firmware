@@ -6,7 +6,7 @@ hendl is a standard Eurorack module. Switch off your case, connect the ribbon
 cable with the **red stripe to −12 V** on both the module and the bus board,
 then power up.
 
-<!-- TODO: confirm and add power draw (mA on +12 / −12) and panel width in HP -->
+<!-- TODO: confirm and add power draw (mA on +12 / −12) -->
 
 ## Your first modulation
 

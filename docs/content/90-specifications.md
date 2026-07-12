@@ -3,6 +3,7 @@
 | | |
 |---|---|
 | **Format** | Eurorack |
+| **Width** | 10 HP |
 | **Channels** | 3, independent |
 | **Modes per channel** | 4 (LFO · Envelope · Sample & Hold · Unique) |
 | **Controls per channel** | 2 pots · 1 CV input · 1 trigger input · 1 button |
@@ -14,7 +15,7 @@
 | **Patch sensing** | Automatic per-input cable detection |
 | **Memory** | Mode and looping/triggered state saved to flash |
 
-<!-- TODO: add panel width (HP), depth (mm), and power draw (mA @ +12 V / −12 V) -->
+<!-- TODO: add depth (mm) and power draw (mA @ +12 V / −12 V) -->
 
 ## Trigger and CV
 
