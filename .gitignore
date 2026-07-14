@@ -8,3 +8,5 @@ build/
 .picotool/
 .picotool-src/
 .picotool-build/
+.DS_Store
+build.log
