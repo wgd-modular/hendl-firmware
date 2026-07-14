@@ -5,6 +5,7 @@
 | **Format** | Eurorack |
 | **Width** | 10 HP |
 | **Depth** | 30 mm incl. power header · 27 mm without |
+| **Power** | +12 V 91 mA · −12 V 8 mA |
 | **Channels** | 3, independent |
 | **Modes per channel** | 4 (LFO · Envelope · Sample & Hold · Unique) |
 | **Controls per channel** | 2 pots · 1 CV input · 1 trigger input · 1 button |
@@ -15,8 +16,6 @@
 | **Processor** | Raspberry Pi Pico 2 · RP2350 (Cortex-M33 @ 150 MHz) |
 | **Patch sensing** | Automatic per-input cable detection |
 | **Memory** | Mode and looping/triggered state saved to flash |
-
-<!-- TODO: add power draw (mA @ +12 V / −12 V) -->
 
 ## Credits
 
