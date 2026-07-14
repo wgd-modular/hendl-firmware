@@ -21,7 +21,7 @@ jobs:
           release-type: simple
           manifest-file: .release-please-manifest.json
 
-  upload-firmware:
+  upload-release-assets:
     needs: release-please
     if: ${{ needs.release-please.outputs.release_created }}
     runs-on: ubuntu-latest
@@ -46,13 +46,17 @@ jobs:
           path: .pico-sdk
           key: pico-sdk-2.1.1
 
-      - name: Build
+      - name: Build firmware
         run: pixi run build
 
-      - name: Upload firmware to release
+      - name: Build manual
+        run: pixi run docs
+
+      - name: Upload assets to release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release upload ${{ needs.release-please.outputs.tag_name }} \
             build/hendl.uf2 \
+            build/hendl-manual.pdf \
             --clobber
