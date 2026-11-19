@@ -16,6 +16,26 @@ function say(message, kind = '') {
   status.className = 'status' + (kind ? ' ' + kind : '');
 }
 
+// state: 'off' | 'indeterminate' | a fraction 0..1
+function setBar(state) {
+  if (state === 'off') {
+    bar.classList.remove('on', 'indeterminate');
+    bar.removeAttribute('aria-valuenow');
+    fill.style.width = '0';
+    return;
+  }
+  bar.classList.add('on');
+  if (state === 'indeterminate') {
+    bar.classList.add('indeterminate');
+    bar.removeAttribute('aria-valuenow');
+    return;
+  }
+  bar.classList.remove('indeterminate');
+  const pct = Math.round(state * 100);
+  fill.style.width = pct + '%';
+  bar.setAttribute('aria-valuenow', String(pct));
+}
+
 function looksLikeUf2(bytes) {
   if (bytes.length < 512 || bytes.length % 512) return false;
   const view = new DataView(bytes.buffer, bytes.byteOffset, 8);
@@ -41,33 +61,43 @@ async function writeUf2(dir, bytes) {
   const handle = await dir.getFileHandle('hendl.uf2', { create: true });
   const writable = await handle.createWritable();
   const chunk = 64 * 1024;
-  bar.hidden = false;
   for (let offset = 0; offset < bytes.length; offset += chunk) {
     await writable.write(bytes.subarray(offset, offset + chunk));
-    fill.style.width = Math.min(100, ((offset + chunk) / bytes.length) * 100) + '%';
+    setBar(Math.min(1, (offset + chunk) / bytes.length));
   }
   // hendl reboots the moment the last block lands, which can pull the drive
   // away before the browser finishes closing the file — that is success.
   try { await writable.close(); } catch { /* expected */ }
 }
 
-async function firmwareBytes() {
-  const local = el('file').files[0];
+async function firmwareBytes(local) {
   if (local) return new Uint8Array(await local.arrayBuffer());
   say('Fetching the latest firmware…');
+  setBar('indeterminate');
   const res = await fetch(FIRMWARE_URL, { redirect: 'follow' });
   if (!res.ok) {
-    throw new Error(`Could not download the firmware (${res.status}). If no release is out yet, pick a local .uf2 below.`);
+    throw new Error(`Could not download the firmware (${res.status}). If no release is out yet, use a local .uf2 below.`);
   }
   return new Uint8Array(await res.arrayBuffer());
 }
 
-async function flash() {
-  el('flash').disabled = true;
+function busy(on) {
+  const button = el('flash');
+  button.disabled = on;
+  button.setAttribute('aria-busy', on ? 'true' : 'false');
+  button.textContent = on ? 'Flashing…' : 'Flash hendl';
+  el('choose').disabled = on;
+  el('flash-local').disabled = on || !el('file').files[0];
+}
+
+async function flash(local) {
+  busy(true);
+  setBar('off');
   try {
-    const bytes = await firmwareBytes();
+    const bytes = await firmwareBytes(local);
     if (!looksLikeUf2(bytes)) throw new Error('That file is not a UF2.');
 
+    setBar('off');
     say('Pick the drive named RP2350…');
     const dir = await window.showDirectoryPicker({ id: 'hendl-rp2350', mode: 'readwrite' });
     if ((await dir.requestPermission({ mode: 'readwrite' })) !== 'granted') {
@@ -78,21 +108,31 @@ async function flash() {
 
     say('Writing firmware…');
     await writeUf2(dir, bytes);
-    fill.style.width = '100%';
+    setBar(1);
     say('Done — hendl rebooted into the new firmware.', 'ok');
   } catch (err) {
-    bar.hidden = true;
+    setBar('off');
     if (err.name === 'AbortError') say('Cancelled.');
     else say(err.message || String(err), 'err');
   } finally {
-    el('flash').disabled = false;
+    busy(false);
   }
 }
 
 if ('showDirectoryPicker' in window) {
-  el('flash').addEventListener('click', flash);
+  const fileInput = el('file');
+  el('choose').addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    el('filename').textContent = file ? file.name : 'No file chosen.';
+    el('filename').classList.toggle('set', !!file);
+    el('flash-local').disabled = !file;
+  });
+  el('flash').addEventListener('click', () => flash(null));
+  el('flash-local').addEventListener('click', () => flash(fileInput.files[0]));
 } else {
+  document.querySelector('.actions').hidden = true;
+  document.querySelector('.advanced').hidden = true;
   el('unsupported').hidden = false;
-  el('flash').disabled = true;
   el('download').href = FIRMWARE_URL;
 }
