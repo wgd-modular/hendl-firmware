@@ -1,0 +1,210 @@
+@font-face {
+  font-family: "Cabin";
+  src: url("fonts/Cabin-Variable.ttf") format("truetype");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Cabin";
+  src: url("fonts/Cabin-Italic-Variable.ttf") format("truetype");
+  font-weight: 400 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --ink: #1a1a1a;
+  --grey: #696969;
+  --faint: #969696;
+  --hair: #d2d2d2;
+  --paper: #ffffff;
+  --display: "Gill Sans", "Cabin", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  max-width: 54rem;
+  margin: 0 auto;
+  padding: 2.4rem 1.5rem 3rem;
+}
+
+a { color: var(--ink); }
+
+/* ── hero ─────────────────────────────────────────────── */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1.5px solid var(--ink);
+}
+
+.brand {
+  margin: 0;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  color: var(--grey);
+}
+
+h1 {
+  margin: 0.15em 0 0;
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(3.2rem, 11vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+}
+
+.subtitle {
+  margin: 0.35em 0 0;
+  font-style: italic;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  color: var(--grey);
+  text-transform: uppercase;
+}
+
+.panel {
+  height: 20rem;
+  width: auto;
+  flex: none;
+}
+
+/* ── card ─────────────────────────────────────────────── */
+.card {
+  margin-top: 2.2rem;
+  border: 1px solid var(--hair);
+  padding: 1.8rem 2rem 2rem;
+}
+
+.steps {
+  margin: 0 0 1.6rem;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  position: relative;
+  padding: 0.55rem 0 0.55rem 2.6rem;
+  border-bottom: 1px solid var(--hair);
+}
+.steps li:last-child { border-bottom: none; }
+
+.steps li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  width: 1.7rem;
+  height: 1.7rem;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: grid;
+  place-items: center;
+}
+
+.steps b { font-weight: 700; }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+button.primary {
+  appearance: none;
+  border: none;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.8rem;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+button.primary:hover { opacity: 0.82; }
+button.primary:disabled { opacity: 0.4; cursor: default; }
+
+.local {
+  font-size: 0.9rem;
+  color: var(--grey);
+}
+.local input { font-family: inherit; font-size: 0.85rem; }
+
+.status {
+  min-height: 1.4em;
+  margin: 1.3rem 0 0;
+  font-style: italic;
+  color: var(--grey);
+}
+.status.ok { color: var(--ink); font-weight: 700; }
+.status.err { color: var(--ink); }
+.status.err::before { content: "— "; }
+
+.bar {
+  margin-top: 0.9rem;
+  height: 3px;
+  background: var(--hair);
+}
+.bar > div {
+  width: 0;
+  height: 100%;
+  background: var(--ink);
+  transition: width 0.1s linear;
+}
+
+/* ── notes + footer ───────────────────────────────────── */
+.note {
+  margin-top: 1.6rem;
+  font-size: 0.92rem;
+  color: var(--grey);
+  line-height: 1.6;
+}
+
+footer {
+  margin-top: 2.6rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--hair);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6rem;
+  font-style: italic;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+footer a { color: var(--grey); text-decoration: none; }
+footer a:hover { color: var(--ink); }
+
+@media (max-width: 640px) {
+  .hero { flex-direction: column-reverse; align-items: flex-start; gap: 1.4rem; }
+  .panel { height: 15rem; align-self: center; }
+}

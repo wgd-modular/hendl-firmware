@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>hendl · Firmware Flasher</title>
+  <meta name="description" content="Flash the latest hendl firmware from your browser.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <div class="titles">
+        <p class="brand">WGD MODULAR</p>
+        <h1>HENDL</h1>
+        <p class="subtitle">Firmware Flasher</p>
+      </div>
+      <img class="panel" src="front-panel.svg" alt="hendl front panel" width="191" height="486">
+    </header>
+
+    <section class="card">
+      <ol class="steps">
+        <li>Hold the <b>BOOT</b> button on the Pico 2 and connect it by USB. It
+          appears as a drive named <b>RP2350</b>.</li>
+        <li>Click <b>Flash hendl</b>, then pick that <b>RP2350</b> drive when asked.</li>
+        <li>Wait a moment — the module reboots into the new firmware on its own.</li>
+      </ol>
+
+      <div class="actions">
+        <button id="flash" class="primary">Flash hendl</button>
+        <label class="local">or flash a local <input type="file" id="file" accept=".uf2"></label>
+      </div>
+
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+      <div id="bar" class="bar" hidden><div id="fill"></div></div>
+    </section>
+
+    <p id="unsupported" class="note" hidden>
+      This flasher needs Chrome or Edge on a desktop — it uses the File System
+      Access API, which Firefox and Safari don't support yet. On those,
+      <a id="download" href="#">download hendl.uf2</a> and drag it onto the
+      RP2350 drive yourself.
+    </p>
+
+    <footer>
+      <a href="https://github.com/wgd-modular/hendl-firmware/releases/latest/download/hendl-manual.pdf">Manual</a>
+      <a href="https://github.com/wgd-modular/hendl-firmware">Source</a>
+      <a href="https://wgdmodular.de">wgdmodular.de</a>
+    </footer>
+  </main>
+
+  <script src="flash.js"></script>
+</body>
+</html>
