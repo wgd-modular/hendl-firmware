@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>hendl · Firmware Flasher</title>
+  <meta name="description" content="Flash the latest hendl firmware from your browser.">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="hendl · Firmware Flasher">
+  <meta property="og:description" content="Flash the latest hendl firmware from your browser.">
+  <meta property="og:url" content="https://wgd-modular.github.io/hendl-firmware/">
+  <meta property="og:image" content="https://wgd-modular.github.io/hendl-firmware/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="fonts/Cabin-Variable.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <div class="titles">
+        <p class="brand">WGD MODULAR</p>
+        <h1>HENDL</h1>
+        <p class="subtitle">Firmware Flasher</p>
+      </div>
+      <img class="panel" src="front-panel.svg" alt="hendl front panel"
+           width="191" height="486" decoding="async">
+    </header>
+
+    <section class="card">
+      <ol class="steps">
+        <li>Hold the <b>BOOT</b> button on the Pico 2 and connect it by USB. It
+          appears as a drive named <b>RP2350</b>.</li>
+        <li>Click <b>Flash hendl</b>, then pick that <b>RP2350</b> drive when asked.</li>
+        <li>Wait a moment — the module reboots into the new firmware on its own.</li>
+      </ol>
+
+      <div class="actions">
+        <button id="flash" class="primary" type="button">Flash hendl</button>
+      </div>
+
+      <details class="advanced">
+        <summary>Flash a local <code>.uf2</code> file</summary>
+        <div class="local">
+          <input type="file" id="file" accept=".uf2" hidden>
+          <button id="choose" class="ghost" type="button">Choose file…</button>
+          <span id="filename" class="filename">No file chosen.</span>
+          <button id="flash-local" class="secondary" type="button" disabled>Flash file</button>
+        </div>
+      </details>
+
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+      <div id="bar" class="bar" role="progressbar" aria-label="Flashing progress"
+           aria-valuemin="0" aria-valuemax="100"><div id="fill"></div></div>
+    </section>
+
+    <p id="unsupported" class="note" hidden>
+      This flasher needs Chrome or Edge on a desktop — it uses the File System
+      Access API, which Firefox and Safari don't support yet. On those,
+      <a id="download" href="#">download hendl.uf2</a> and drag it onto the
+      RP2350 drive yourself.
+    </p>
+
+    <noscript>
+      <p class="note">This flasher needs JavaScript. You can still
+        <a href="https://github.com/wgd-modular/hendl-firmware/releases/latest/download/hendl.uf2">download hendl.uf2</a>
+        and drag it onto the RP2350 drive.</p>
+    </noscript>
+
+    <footer>
+      <a href="https://github.com/wgd-modular/hendl-firmware/releases/latest/download/hendl-manual.pdf">Manual</a>
+      <a href="https://github.com/wgd-modular/hendl-firmware">Source</a>
+      <a href="https://wgdmodular.de">wgdmodular.de</a>
+    </footer>
+  </main>
+
+  <script src="flash.js"></script>
+</body>
+</html>
