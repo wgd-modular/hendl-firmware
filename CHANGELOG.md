@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/wgd-modular/hendl-firmware/compare/v1.0.0...v1.1.0) (2026-11-19)
+
+
+### Features
+
+* Add a browser firmware flasher ([#5](https://github.com/wgd-modular/hendl-firmware/issues/5)) ([4bcb6e4](https://github.com/wgd-modular/hendl-firmware/commit/4bcb6e4d27b62c6365e98897bd375550f9f42d30))
+
 ## 1.0.0 (2026-07-14)
 
 
